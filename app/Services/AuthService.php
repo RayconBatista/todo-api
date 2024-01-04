@@ -12,6 +12,7 @@ use App\Http\Requests\AuthLoginRequest;
 use App\Http\Requests\AuthRegisterRequest;
 use App\Models\PasswordReset;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class AuthService
@@ -49,14 +50,14 @@ class AuthService
             throw new UserHasBeenTakenException();
         }
 
-        $userPassword = bcrypt($data['password'] ?? Str::random(10));
+        $userPassword = Hash::make($data['password']);
 
         $user = User::create([
-            'first_name' => $data['first_name'],
-            'last_name' => $data['last_name'],
-            'email' => $data['email'],
-            'password' => $userPassword,
-            'confirmation_token' => Str::random(60),
+            'first_name'            => $data['first_name'],
+            'last_name'             => $data['last_name'],
+            'email'                 => $data['email'],
+            'password'              => $userPassword,
+            'confirmation_token'    => Str::random(60),
         ]);
 
         event(new UserRegistered($user));

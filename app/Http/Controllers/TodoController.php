@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TodoRequest;
+use App\Http\Requests\TodoStoreRequest;
 use App\Http\Requests\TodoUpdateRequest;
 use App\Http\Resources\TodoResource;
 use App\Models\Todo;
@@ -33,7 +34,7 @@ class TodoController extends Controller
         return new TodoResource($todo);
     }
 
-    public function store(TodoRequest $request): TodoResource
+    public function store(TodoStoreRequest $request): TodoResource
     {
         $input = $request->validated();
         $todo = auth()->user()?->todos()->create($input);

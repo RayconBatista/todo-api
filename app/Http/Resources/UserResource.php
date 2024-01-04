@@ -23,11 +23,12 @@ class UserResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'first_name' => $this->first_name,
-            'last_name' => $this->last_name,
-            'email' => $this->email,
+            'id'                => $this->id,
+            'first_name'        => $this->first_name,
+            'last_name'         => $this->last_name,
+            'email'             => $this->email,
             'email_verified_at' => $this->email_verified_at,
-            'todos' => TodoResource::collection($this->whenLoaded('todos'))
+            'todos'             => TodoResource::collection($this->whenLoaded('todos'))
         ];
     }
 }

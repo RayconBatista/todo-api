@@ -22,7 +22,7 @@ class TodoResource extends JsonResource
         return [
             'id' => $this->id,
             'label' => $this->label,
-            'user' => $this->user,
+            'user' => UserResource::make($this->user),
             'tasks' => TaskResource::collection($this->whenLoaded('tasks'))
         ];
     }
