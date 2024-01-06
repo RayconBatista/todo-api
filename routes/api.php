@@ -15,17 +15,19 @@ use App\Http\Controllers\{AuthController, MeController, TodoController, TaskCont
 |
 */
 
-Route::prefix('v1')->group(function() {
+Route::prefix('v1')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('register', [AuthController::class, 'register']);
     Route::post('verify-email', [AuthController::class, 'verifyEmail']);
     Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
     Route::post('reset-password', [AuthController::class, 'resetPassword']);
-    Route::prefix('me')->group(function() {
+    Route::prefix('me')->group(function () {
         Route::resource('/', MeController::class);
+        Route::put('/{user}/update', [MeController::class, 'update'])->middleware('auth:api');
     });
 
     Route::resource('users', UserController::class);
     Route::resource('todos', TodoController::class);
     Route::resource('todo/{todo}/tasks', TaskController::class);
+    Route::post('todo/{todo}/tasks/{task}', [TaskController::class, 'done']);
 });

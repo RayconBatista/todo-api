@@ -13,11 +13,19 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
-            'first_name' => 'Raycon',
-            'last_name' => 'Lima',
-            'email' => 'raycon@gmail.com',
-            'password' => bcrypt('123456789'),
+        User::insert([
+            [
+                'first_name' => 'Raycon',
+                'last_name' => 'Lima',
+                'email' => 'raycon@gmail.com',
+                'password' => bcrypt('123456789'),
+            ],
+            [
+                'first_name' => 'Eloise',
+                'last_name' => 'Lima',
+                'email' => 'eloise@gmail.com',
+                'password' => bcrypt('123456789'),
+            ]
         ]);
 
 //        User::factory(5)->create();

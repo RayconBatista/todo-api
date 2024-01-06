@@ -7,6 +7,7 @@ use App\Http\Requests\TodoStoreRequest;
 use App\Http\Requests\TodoUpdateRequest;
 use App\Http\Resources\TodoResource;
 use App\Models\Todo;
+use App\Models\User;
 use App\Services\TodoService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
@@ -14,24 +15,25 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class TodoController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:api');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth:api');
+    // }
 
     public function index(): AnonymousResourceCollection
     {
-        return TodoResource::collection(auth()->user()->todos);
+        $todos = auth()->user()->todos()->latest()->paginate(15);
+        return TodoResource::collection($todos);
     }
 
     /**
      * @throws AuthorizationException
      */
-    public function show(Todo $todo): TodoResource
+    public function show(Todo $todo)
     {
         $this->authorize('view', $todo);
         $todo->load('tasks');
-        return new TodoResource($todo);
+        return TodoResource::make($todo);
     }
 
     public function store(TodoStoreRequest $request): TodoResource
@@ -58,7 +60,7 @@ class TodoController extends Controller
      */
     public function destroy(Todo $todo):void
     {
-        $this->authorize('destroy', $todo);
+        // $this->authorize('destroy', $todo);
         $todo->delete();
     }
 }

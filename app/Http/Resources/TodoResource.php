@@ -19,11 +19,15 @@ class TodoResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // dd($this->resource->tasks);
         return [
-            'id' => $this->id,
+            'id'    => $this->id,
             'label' => $this->label,
-            'user' => UserResource::make($this->user),
-            'tasks' => TaskResource::collection($this->whenLoaded('tasks'))
+            'user'  => UserResource::make($this->user),
+            'tasks' => [
+                'data'      => $this->resource->tasks,
+                'length'    => $this->tasks->count() 
+            ],
         ];
     }
 }

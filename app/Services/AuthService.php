@@ -85,7 +85,7 @@ class AuthService
 
     public function forgotPassword(string $email): string
     {
-        $user = User::whereEmail($email)->firstOrFail();
+        $user = User::where('email', $email)->firstOrFail();
         $token = Str::random(60);
 
         $passwordReset = new PasswordReset();
@@ -108,7 +108,7 @@ class AuthService
         {
             throw new ResetPasswordTokenInvalidException();
         }
-        $user = User::whereEmail($data['email'])->firstOrFail();
+        $user = User::where('email', $data['email'])->firstOrFail();
         $user->password = bcrypt($data['password']);
         $user->save();
 
