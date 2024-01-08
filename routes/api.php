@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{AuthController, MeController, TodoController, TaskController, UserController};
+use App\Http\Controllers\{AuthController, InviteController, MeController, TodoController, TaskController, UserController, ProjectController};
 
 /*
 |--------------------------------------------------------------------------
@@ -26,8 +26,13 @@ Route::prefix('v1')->group(function () {
         Route::put('/{user}/update', [MeController::class, 'update'])->middleware('auth:api');
     });
 
-    Route::resource('users', UserController::class);
+    Route::resource('users', UserController::class)->middleware('auth:api');
+    
+    Route::post('user/send-invite', [InviteController::class, 'generateInvite'])->middleware('auth:api');
+    // Route::get('/accept-invite/{token}', [InviteController::class, 'acceptInvite'])->name('accept.invite');
+
     Route::resource('todos', TodoController::class);
-    Route::resource('todo/{todo}/tasks', TaskController::class);
+    Route::resource('projects', ProjectController::class)->middleware('auth:api');
+    Route::resource('todo/{todo}/tasks', TodoController::class)->middleware('auth:api');
     Route::post('todo/{todo}/tasks/{task}', [TaskController::class, 'done']);
 });

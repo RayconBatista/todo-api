@@ -36,12 +36,15 @@ class AuthController extends Controller
     /**
      * @throws UserHasBeenTakenException
      */
-    public function register(AuthRegisterRequest $request): UserResource
+    public function register(AuthRegisterRequest $request)
     {
         $data = $request->validated();
-        $user = $this->authService->register($data);
+        $this->authService->register($data);
 
-        return new UserResource($user);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Projeto excluído com sucesso'
+        ]);
     }
 
     /**

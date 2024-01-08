@@ -12,6 +12,17 @@ export default class AuthService extends BaseService {
                 .catch(error => reject(error.response))
         })
     }
+
+    static async register (params) {
+        return new Promise((resolve, reject) => {
+            this.request()
+                .post('/register', params)
+                .then(response => {
+                    resolve(response)
+                })
+                .catch(error => reject(error.response))
+        })
+    }
     
     static async getMe () {
         const token = localStorage.getItem(TOKEN_NAME)

@@ -1,5 +1,5 @@
 export default ({
     user: {},
     loading: false,
-    loggedIn: false
+    loggedIn: false,
 })

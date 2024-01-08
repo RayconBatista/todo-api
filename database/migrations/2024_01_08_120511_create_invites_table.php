@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('todos', function (Blueprint $table) {
+        Schema::create('invites', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('project_id')->constrained()->onDelete('CASCADE')->onUpdate('CASCADE');
-            $table->string('label');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('token')->unique();
+            $table->string('email');
+            $table->timestamp('expires_at')->nullable();
+            $table->timestamp('registered_at')->nullable();
+            $table->boolean('is_used')->default(false);
             $table->timestamps();
         });
     }
@@ -25,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('todos');
+        Schema::dropIfExists('invites');
     }
 };

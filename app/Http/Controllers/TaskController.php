@@ -17,8 +17,8 @@ class TaskController extends Controller
 
     public function index(): AnonymousResourceCollection
     {
-        $todos = Task::latest()->paginate();
-        // $todos = auth()->user()->todos()->latest()->paginate(15);
+        // $todos = Task::where('user_id', auth()->id())->latest()->paginate();
+        $todos = auth()->user()->todos()->latest()->paginate(15);
         return TaskResource::collection($todos);
     }
 

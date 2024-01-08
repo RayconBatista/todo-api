@@ -21,6 +21,22 @@ const routes = [
         component: pages.Dashboard,
       },
       {
+        path: "projects",
+        name: "projects",
+        children: [
+          {
+            path: "",
+            name: "projects.index",
+            component: pages.Project,
+          },
+          {
+            path: ":id",
+            name: "projects.single",
+            component: pages.ProjectSingle,
+          },
+        ]
+      },
+      {
         path: "todos",
         name: "todos",
         children: [
@@ -55,6 +71,9 @@ const routes = [
   },
   {
     path: "/registro",
+    meta: {
+      title: "Cadastro",
+    },
     component: templates.LayoutAuth,
     children: [{ path: "", name: "register", component: authPages.Register }],
   },

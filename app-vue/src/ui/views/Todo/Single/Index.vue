@@ -1,63 +1,3 @@
-<!-- <template>
-    <div class="flex container p-0">
-        <notifications position="top right" />
-        <div class="mb-4 w-full mr-4" v-if="todo">
-            <div class="container flex bg-white rounded-md shadow-md">
-                <div>
-                    <ul class="container p-4">
-                        <li><span class="px-2 py-2 text-gray-500 font-semibold">Todo: </span> {{ todo?.label }}</li>
-                        <li><span class="px-2 py-2 text-gray-500 font-semibold">Usuário:</span>
-                            {{ todo?.user.first_name }} {{ todo?.user.last_name }}
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="bg-white rounded-lg shadow-md mt-4">
-                <input type="text" v-model="form.label" v-on:keyup.enter="addTask(todo.id)"
-                class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500 mb-4">
-
-                <table class="min-w-full border border-gray-300">
-                    <thead>
-                        <tr>
-                            <th class="px-4 py-2 text-white bg-gray-800 border-b">Nome</th>
-                            <th class="px-4 py-2 text-white bg-gray-800 border-b">Completo</th>
-                            <th class="px-4 py-2 text-white bg-gray-800 border-b">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-if="todoCount === 0">
-                            <td colspan="4">Nenhuma tarefa disponível.</td>
-                        </tr>
-                        <tr v-if="loading">
-                            <td colspan="4" class="text-center p-2">Carregando...</td>
-                        </tr>
-                        
-                        <tr v-else v-for="task in tasksByNotDone" :key="task?.id">
-                            <td class="px-4 py-2 border-b">{{ task.label }}</td>
-                            <td class="px-4 py-2 border-b">{{ task.is_completed == 1 ? "Finalizado" : "Não finalizado" }}
-                            </td>
-                            <td class="px-4 py-2 border-b">
-                                <button @click.stop.prevent="setDone(todo.id, task.id)"
-                                    class="px-1 py-1 mr-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
-                                    Finalizar
-                                </button>
-                                <button @click.stop.prevent="destroyTask(todo.id, task.id)"
-                                    class="px-1 py-1 font-bold text-white bg-red-500 rounded hover:bg-red-700">
-                                    Remover
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-        <div class="mb-4 w-full mr-4" v-else>
-            Carregando....
-        </div>
-    </div>
-</template> -->
-
 <template>
     <div class="container">
         <div
@@ -100,7 +40,7 @@
                         <tr v-if="loading">
                             <td colspan="4" class="text-center p-2">Carregando...</td>
                         </tr>
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700" v-for="task in tasksByNotDone"
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700" v-for="task in todo?.tasks?.data"
                             :key="task?.id">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 {{ task?.id }}

@@ -1,37 +1,28 @@
 import BaseService from "./base.service"
 
-export default class TodoService extends BaseService {
-  static getTodos() {
+export default class ProjectService extends BaseService {
+  static getProjects() {
     return new Promise(async (resolve, reject) => {
       await this.request({ auth: true })
-        .get('/todos')
+        .get('/projects')
         .then(response => resolve(response))
         .catch(error => reject(error.response))
     })
   }
 
-  static storeTodo(params) {
+  static getProject(id) {
     return new Promise(async (resolve, reject) => {
       await this.request({ auth: true })
-        .post('/todos', params)
+        .get(`/projects/${id}`)
         .then(response => resolve(response))
         .catch(error => reject(error.response))
     })
   }
 
-  static getTodo(id) {
+  static destroyProject(id) {
     return new Promise(async (resolve, reject) => {
       await this.request({ auth: true })
-        .get(`/todos/${id}`)
-        .then(response => resolve(response))
-        .catch(error => reject(error.response))
-    })
-  }
-
-  static destroyTodo(id) {
-    return new Promise(async (resolve, reject) => {
-      await this.request({ auth: true })
-        .delete(`/todos/${id}`)
+        .delete(`/projects/${id}`)
         .then(response => resolve(response))
         .catch(error => reject(error.response))
     })

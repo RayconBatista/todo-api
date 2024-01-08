@@ -4,6 +4,10 @@ export default ({
         state.meta = todos.meta
         state.meta.links = todos.meta.links
     },
+    REFRESH_TODOS(state, { data, meta }) {
+        state.todos.data = data;
+        state.todos.meta = meta;
+    },
     SET_TODO(state, todo) {
         state.todo = todo.data
     },

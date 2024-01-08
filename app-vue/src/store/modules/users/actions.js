@@ -1,9 +1,20 @@
 import AuthService from '@/infra/services/auth.service';
 import ResetPasswordService from '@/infra/services/password.reset.service';
+import { useNotification } from "@kyvg/vue3-notification";
+import { useRouter, useRoute } from 'vue-router';
+
+const router = useRouter();
+const { notify } = useNotification();
 
 export default ({
     async auth({ dispatch }, params) {
         return await AuthService.auth(params).then(() => dispatch('getMe'))
+    },
+
+    storeUser({ commit }, params) {
+        AuthService.register(params).finally(() => {
+            window.location.href = "http://localhost:5173/login"
+        })
     },
 
     async getMe({ commit }) {
@@ -11,7 +22,7 @@ export default ({
 
         await AuthService.getMe()
             .then(user => {
-                commit('GET_USER', user)
+                commit('GET_USER', user);
             })
             .finally(() => commit('CHANGE_LOADING', false))
     },

@@ -18,7 +18,9 @@ class TodoFactory extends Factory
     public function definition(): array
     {
         return [
-            'label' => $this->faker->sentence()
+            'label' => $this->faker->sentence(),
+            'user_id' => $this->faker->randomNumber(),
+            'project_id' => $this->faker->randomNumber(),
         ];
     }
 }

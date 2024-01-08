@@ -84,7 +84,7 @@ export default {
 
 
         onMounted(() => {
-            store.dispatch('getMe')
+            store.dispatch('users/getMe')
         });
 
         const updateMe = async (userId) => {
@@ -94,7 +94,7 @@ export default {
                 last_name: form.last_name,
                 phone: form.phone,
             };
-            await store.dispatch('updateMe', params);
+            await store.dispatch('users/updateMe', params);
         };
 
         return {

@@ -60,7 +60,7 @@ class AuthService
             'confirmation_token'    => Str::random(60),
         ]);
 
-        event(new UserRegistered($user));
+        // event(new UserRegistered($user));
 
         return $user;
     }

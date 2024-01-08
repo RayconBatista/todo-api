@@ -12,7 +12,9 @@ export default ({
     await TodoService
       .getTodos()
       .then(response => {
+        const { data, meta } = response.data;
         commit('ADD_TODOS', response.data)
+        commit('REFRESH_TODOS', { data, meta })
       })
   },
   async storeTodo({ commit }, params) {
