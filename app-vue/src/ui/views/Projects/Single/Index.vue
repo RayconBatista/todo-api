@@ -115,7 +115,8 @@
                 {{ todo?.label }}
               </td>
               <td class="px-6 py-4">
-                {{ todo?.tasks.length }}
+                <!-- {{ todo?.tasks.length }} -->
+                {{ `${todo?.tasks.data.filter(t => t.is_completed == 1).length} / ${todo?.tasks.length}` }}
               </td>
               <td class="px-6 py-4">
                 {{ todo?.user?.first_name }}
@@ -170,6 +171,7 @@ export default {
         });
         store.dispatch('setProject', route.params.id);
         modalRef.value.hideModal();
+        form.value.user_id = '';
       });
     }
 

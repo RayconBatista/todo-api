@@ -26,14 +26,14 @@ Route::prefix('v1')->group(function () {
         Route::put('/{user}/update', [MeController::class, 'update'])->middleware('auth:api');
     });
 
-    Route::resource('users', UserController::class)->middleware('auth:api');
+    Route::resource('users', UserController::class);
     
     Route::post('user/send-invite', [InviteController::class, 'generateInvite'])->middleware('auth:api');
     // Route::get('/accept-invite/{token}', [InviteController::class, 'acceptInvite'])->name('accept.invite');
 
     Route::resource('todos', TodoController::class);
-    Route::resource('projects', ProjectController::class)->middleware('auth:api');
-    Route::post('projects/{project}/add-member', [ProjectController::class, 'addMember'])->middleware('auth:api');
+    Route::resource('projects', ProjectController::class);
+    Route::post('projects/{project}/add-member', [ProjectController::class, 'addMember']);
     Route::resource('todo/{todo}/tasks', TodoController::class)->middleware('auth:api');
     Route::post('todo/{todo}/tasks/{task}', [TaskController::class, 'done']);
 });
