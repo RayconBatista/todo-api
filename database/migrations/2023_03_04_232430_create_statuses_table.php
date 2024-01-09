@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tasks', function (Blueprint $table) {
+        Schema::create('statuses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('todo_id')->constrained()->onDelete('CASCADE')->onUpdate('CASCADE');
-            $table->foreignId('status_id')->nullable()->constrained()->onDelete('CASCADE')->onUpdate('CASCADE');
             $table->string('label');
-            $table->boolean('is_completed')->default(false);
+            $table->string('color');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tasks');
+        Schema::dropIfExists('statuses');
     }
 };

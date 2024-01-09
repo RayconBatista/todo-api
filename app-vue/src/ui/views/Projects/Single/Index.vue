@@ -157,6 +157,7 @@ export default {
     const users = computed(() => store.state.users.users)
     const project = computed(() => store.getters.getProjectSelected);
     const isModalVisible = ref(false);
+    
     onMounted(() => {
       store.dispatch('getUsers');
       store.dispatch('setProject', route.params.id)
