@@ -1,8 +1,7 @@
 export default ({
-    ADD_USERS(state, users) {
-        state.users = [...users.data]
-        state.meta = users.meta
-        state.meta.links = users.meta.links
+    ADD_USERS(state, {data, meta}) {
+        state.users = data;
+        state.users.meta = meta;
     },
     GET_USER(state, user) {
         state.loading = true

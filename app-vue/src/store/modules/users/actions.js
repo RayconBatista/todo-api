@@ -12,11 +12,11 @@ export default ({
     },
 
     async getUsers({ commit }) {
-        await AuthService
+        return await AuthService
             .getUsers()
             .then(response => {
-                console.log(response.data)
-                commit('ADD_USERS', response.data)
+                const { data, meta } = response.data;
+                commit('ADD_USERS', { data, meta });
             })
     },
 

@@ -22,8 +22,8 @@
                 </div>
 
                 <div class="bg-green-500 p-4 text-white">
-                    <h2 class="text-xl font-semibold">Quantidade de Grupos</h2>
-                    <p class="text-3xl">{{ groups }}</p>
+                    <h2 class="text-xl font-semibold">Quantidade de Membros</h2>
+                    <p class="text-3xl">{{ totalMembers }}</p>
                 </div>
 
                 <div class="bg-yellow-500 p-4 text-white">
@@ -46,16 +46,17 @@ export default {
         const store = useStore();
         const totalTodos = computed(() => store.getters.getTodoTotal);
         const totalprojects = computed(() => store.getters.getProjectTotal);
-        const groups = 30;
+        const totalMembers = computed(() => store.getters.getMembersTotal);
 
         onMounted(() => {
             store.dispatch('getTodos');
             store.dispatch('getProjects');
+            store.dispatch('getUsers');
         });
         
         return {
             totalTodos,
-            groups,
+            totalMembers,
             totalprojects
         }
     }
