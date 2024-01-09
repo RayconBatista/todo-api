@@ -15,5 +15,10 @@ export default {
             icon: 'fa-solid fa-check-to-slot',
             to: 'todos.index'
         },
+        {
+            title: 'Usuários',
+            icon: 'fa-solid fa-users',
+            to: 'users.index'
+        },
     ]
 }

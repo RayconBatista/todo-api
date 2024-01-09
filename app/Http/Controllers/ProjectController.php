@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ProjectResource;
-use App\Models\Project;
+use App\Models\{Project, User};
 use App\Models\Todo;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -15,6 +15,12 @@ class ProjectController extends Controller
     {
         $projects = Project::with('todos')->latest()->paginate();
         return ProjectResource::collection($projects);
+    }
+
+    public function addMember(Project $project, Request $request)
+    {
+        $user = User::find($request->user_id);
+        $user->projects()->attach($project->id);
     }
 
     /**

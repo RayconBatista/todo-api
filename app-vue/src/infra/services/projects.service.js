@@ -19,6 +19,15 @@ export default class ProjectService extends BaseService {
     })
   }
 
+  static addMember(id, payload) {
+    return new Promise(async (resolve, reject) => {
+      await this.request({ auth: true })
+        .post(`/projects/${id}/add-member`, payload)
+        .then(response => resolve(response))
+        .catch(error => reject(error.response))
+    })
+  }
+
   static destroyProject(id) {
     return new Promise(async (resolve, reject) => {
       await this.request({ auth: true })

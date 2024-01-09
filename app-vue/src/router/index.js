@@ -21,6 +21,17 @@ const routes = [
         component: pages.Dashboard,
       },
       {
+        path: "users",
+        name: "users",
+        children: [
+          {
+            path: "",
+            name: "users.index",
+            component: pages.User,
+          },
+        ]
+      },
+      {
         path: "projects",
         name: "projects",
         children: [

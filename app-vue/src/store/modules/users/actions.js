@@ -11,7 +11,16 @@ export default ({
         return await AuthService.auth(params).then(() => dispatch('getMe'))
     },
 
-    storeUser({ commit }, params) {
+    async getUsers({ commit }) {
+        await AuthService
+            .getUsers()
+            .then(response => {
+                console.log(response.data)
+                commit('ADD_USERS', response.data)
+            })
+    },
+
+    storeUser(params) {
         AuthService.register(params).finally(() => {
             window.location.href = "http://localhost:5173/login"
         })

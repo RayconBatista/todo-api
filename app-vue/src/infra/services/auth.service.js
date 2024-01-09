@@ -50,6 +50,15 @@ export default class AuthService extends BaseService {
                 .catch(error => reject(error.response))
         })
     }
+
+    static getUsers() {
+        return new Promise(async (resolve, reject) => {
+          await this.request({ auth: true })
+            .get('/users')
+            .then(response => resolve(response))
+            .catch(error => reject(error.response))
+        })
+      }
     
     static async logout () {
         return new Promise((resolve, reject) => {

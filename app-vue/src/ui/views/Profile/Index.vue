@@ -1,7 +1,8 @@
 <template>
     <div class="container">
-        <div class="bg-white rounded-md w-full p-4 shadow-md mb-4">
-            <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl mb-4">Meu perfil</h2>
+        <Header title="Meu perfil" />
+        <div class="bg-white dark:bg-gray-800 rounded-md w-full p-4 shadow-md mb-4">
+            <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl mb-4">Meu perfil</h2>
             <div class="flex">
                 <div class="mb-4 w-1/5">
                     <div>
@@ -16,7 +17,7 @@
                     <div>
                         <ul class="container">
                             <div class="mb-4">
-                                <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
+                                <label class="block text-gray-700 dark:text-white text-sm font-bold mb-2" for="name">
                                     Nome
                                 </label>
                                 <input 
@@ -28,7 +29,7 @@
                                 >
                             </div>
                             <div class="mb-4">
-                                <label class="block text-gray-700 text-sm font-bold mb-2" for="last_name">
+                                <label class="block text-gray-700 dark:text-white text-sm font-bold mb-2" for="last_name">
                                     Sobrenome
                                 </label>
                                 <input 
@@ -40,7 +41,7 @@
                                 >
                             </div>
                             <div class="mb-4">
-                                <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+                                <label class="block text-gray-700 dark:text-white text-sm font-bold mb-2" for="email">
                                     Email
                                 </label>
                                 <input 
@@ -70,9 +71,12 @@
 <script>
 import { computed, onMounted, reactive } from 'vue'
 import { useStore } from 'vuex'
-
+import Header from '../../components/Header.vue';
 export default {
     name: "Profile",
+    components: {
+        Header
+    },
     setup() {
         const store = useStore();
         const auth = computed(() => store.getters.getMe);

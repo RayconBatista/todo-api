@@ -33,6 +33,7 @@ Route::prefix('v1')->group(function () {
 
     Route::resource('todos', TodoController::class);
     Route::resource('projects', ProjectController::class)->middleware('auth:api');
+    Route::post('projects/{project}/add-member', [ProjectController::class, 'addMember'])->middleware('auth:api');
     Route::resource('todo/{todo}/tasks', TodoController::class)->middleware('auth:api');
     Route::post('todo/{todo}/tasks/{task}', [TaskController::class, 'done']);
 });

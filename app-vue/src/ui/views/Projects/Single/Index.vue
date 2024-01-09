@@ -55,6 +55,15 @@
         class="w-1/4 p-2 text-center bg-white rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 max-h-full">
         <div class="px-4 sm:px-0 flex justify-between">
           <h3 class="text-base font-semibold leading-7 text-gray-900 dark:text-white text-left uppercase">Membros</h3>
+          <Modal ref="modalRef" title="Adicionar" :acceptFunction="addMember" @close-modal="handleCloseModal">
+            <select v-model="form.user_id"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+              <option selected disabled>Selecionar membro</option>
+              <option v-for="member in users" :key="member?.id" :value="member.id">
+                {{ member.first_name }} {{ member.last_name }} - [{{ member.email }}]
+              </option>
+            </select>
+          </Modal>
         </div>
 
         <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
@@ -109,7 +118,7 @@
                 {{ todo?.tasks.length }}
               </td>
               <td class="px-6 py-4">
-                {{ todo?.user?.first_name }} 
+                {{ todo?.user?.first_name }}
                 {{ todo?.user?.last_name }}
               </td>
             </tr>
@@ -121,41 +130,69 @@
 </template>
   
 <script>
-import { onMounted, computed, ref } from 'vue';
+import { onMounted, computed, ref, getCurrentInstance  } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
 import { useNotification } from "@kyvg/vue3-notification";
 import Header from '@/ui/components/Header.vue';
+import Modal from '../../../components/Modal.vue';
+import ProjectService from '@/infra/services/projects.service'
+
 export default {
   name: "Project",
   components: {
-    Header
+    Header,
+    Modal
   },
-  setup() {
+  emits: ['close-modal'],
+  setup(props, context) {
     const store = useStore();
     const route = useRoute();
     const router = useRouter();
+    const modalRef = ref(null);
     const loading = ref(false);
     const { notify } = useNotification();
-
+    const form = ref({user_id: ''});
+    const users = computed(() => store.state.users.users)
     const project = computed(() => store.getters.getProjectSelected);
-
+    const isModalVisible = ref(false);
     onMounted(() => {
+      store.dispatch('getUsers');
       store.dispatch('setProject', route.params.id)
     });
 
+    const addMember = () => {
+      ProjectService.addMember(route.params.id, {user_id: form.value.user_id}).then(() => {
+        notify({
+          title: "Deu certo",
+          text: "Membro adicionado com sucesso",
+          type: "success",
+        });
+        store.dispatch('setProject', route.params.id);
+        modalRef.value.hideModal();
+      });
+    }
+
+    const handleCloseModal = () => {
+      isModalVisible.value = false
+    }
+
     const getTagColorClass = (color) => {
       if (color) {
-        console.log(`bg-[${color}]`)
         return `bg-[${color}]`;
       }
       return 'text-gray-700';
     }
 
     return {
+      users,
+      form,
       project,
       loading,
-      getTagColorClass
+      modalRef,
+      getTagColorClass,
+      addMember,
+      handleCloseModal,
     };
   },
 }

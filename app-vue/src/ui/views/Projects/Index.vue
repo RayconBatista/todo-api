@@ -12,26 +12,26 @@
                 <table class="min-w-full border border-gray-300">
                     <thead>
                         <tr>
-                            <th class="px-4 py-2 text-white bg-gray-800 border-b">Index</th>
-                            <th class="px-4 py-2 text-white bg-gray-800 border-b">Nome</th>
-                            <th class="px-4 py-2 text-white bg-gray-800 border-b">Description</th>
-                            <th class="px-4 py-2 text-white bg-gray-800 border-b">Ativo</th>
-                            <th class="px-4 py-2 text-white bg-gray-800 border-b">Ações</th>
+                            <th class="px-4 py-2 text-gray-700 dark:text-white bg-gray-800 border-b">Index</th>
+                            <th class="px-4 py-2 text-gray-700 dark:text-white bg-gray-800 border-b">Nome</th>
+                            <th class="px-4 py-2 text-gray-700 dark:text-white bg-gray-800 border-b">Description</th>
+                            <th class="px-4 py-2 text-gray-700 dark:text-white bg-gray-800 border-b">Ativo</th>
+                            <th class="px-4 py-2 text-gray-700 dark:text-white bg-gray-800 border-b">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700" v-for="project in projects"
                             :key="project?.id">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                 {{ project?.id }}
                             </th>
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                 {{ project?.name }}
                             </th>
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                 {{ project?.description }}
                             </th>
-                            <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                 {{ project.active }}
                             </td>
                             <td class="px-6 py-4 text-center">
