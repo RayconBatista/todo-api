@@ -3,7 +3,6 @@
         <Header title="Todos" />
         <div
             class="w-full p-2 text-center bg-white rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 max-h-full">
-            <notifications position="top right" />
 
             <div class="flex items-end mb-4">
                 <Modal ref="modalTodoRef" class="items-end ml-auto" title="Nova tarefa" :acceptFunction="addTodo"
@@ -37,15 +36,16 @@
                     <tbody>
                         <tr class="bg-white dark:bg-gray-800 dark:border-gray-700" v-for="todo in todos" :key="todo.id">
                             <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{
-                                todo.id }}</td>
+                                todo?.id }}</td>
                             <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{
-                                todo.label }}</td>
+                                todo?.label }}</td>
                             <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{
                                 todo?.user?.first_name }} {{ todo?.user?.last_name }}</td>
                             <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{
                                 todo?.project?.name }}</td>
-                            <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{
-                                `${todo?.tasks.data.filter(t => t.is_completed == 1).length} / ${todo?.tasks.length}` }}
+                                <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{
+
+                                `${todo?.tasks?.data?.filter(t => t?.status?.id == 4)?.length || 0} / ${todo?.tasks?.length || 0}` }}
                             </td>
                             <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 <router-link :to="{ name: 'todos.single', params: { id: todo.id } }"

@@ -20,44 +20,28 @@
                                 <label class="block text-gray-700 dark:text-white text-sm font-bold mb-2" for="name">
                                     Nome
                                 </label>
-                                <input 
-                                    id="name" 
-                                    type="text" 
-                                    v-model="form.first_name"
-                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-                                    :placeholder="auth.first_name"
-                                >
+                                <input id="name" type="text" v-model="form.first_name"
+                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    :placeholder="auth.first_name">
                             </div>
                             <div class="mb-4">
                                 <label class="block text-gray-700 dark:text-white text-sm font-bold mb-2" for="last_name">
                                     Sobrenome
                                 </label>
-                                <input 
-                                    id="last_name" 
-                                    type="text" 
-                                    v-model="form.last_name"
-                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-                                    :placeholder="auth.last_name"
-                                >
+                                <input id="last_name" type="text" v-model="form.last_name"
+                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    :placeholder="auth.last_name">
                             </div>
                             <div class="mb-4">
                                 <label class="block text-gray-700 dark:text-white text-sm font-bold mb-2" for="email">
                                     Email
                                 </label>
-                                <input 
-                                    id="email" 
-                                    type="text" 
-                                    v-model="form.email"
-                                    :placeholder="auth.email"
-                                    disabled
-                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-                                >
+                                <input id="email" type="text" v-model="form.email" :placeholder="auth.email" disabled
+                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                             </div>
-                            <button 
+                            <button
                                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 float-right"
-                                @click.prevent="updateMe(auth.id)"
-                                type="button"
-                            >
+                                @click.prevent="updateMe(auth.id)" type="button">
                                 Salvar
                             </button>
                         </ul>
@@ -72,12 +56,15 @@
 import { computed, onMounted, reactive } from 'vue'
 import { useStore } from 'vuex'
 import Header from '../../components/Header.vue';
+import { useNotification } from "@kyvg/vue3-notification";
+
 export default {
     name: "Profile",
     components: {
         Header
     },
     setup() {
+        const { notify } = useNotification();
         const store = useStore();
         const auth = computed(() => store.getters.getMe);
         const form = reactive({
@@ -88,7 +75,7 @@ export default {
 
 
         onMounted(() => {
-            store.dispatch('users/getMe')
+            store.dispatch('getMe')
         });
 
         const updateMe = async (userId) => {
@@ -98,7 +85,14 @@ export default {
                 last_name: form.last_name,
                 phone: form.phone,
             };
-            await store.dispatch('users/updateMe', params);
+            await store.dispatch('updateMe', params);
+            notify({
+                title: "Deu certo",
+                text: "Perfil atualizado com sucesso",
+                type: "success",
+            });
+            
+            store.dispatch('getMe');
         };
 
         return {

@@ -1,24 +1,8 @@
 <template>
     <div class="container">
+        <Header title="Todos" :data="todo" />
         <div
             class="w-full p-2 text-center bg-white rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 max-h-full">
-            <notifications position="top right" />
-            <div class="flex justify-between mb-2">
-                <ol class="flex text-gray-600 list-reset">
-                    <li>
-                        <router-link to="/home" class="dark:text-white">Home</router-link>
-                    </li>
-                    <li class="mx-2">/</li>
-                    <li>
-                        <router-link :to="{ name: 'todos.index' }" class="dark:text-white">Todos</router-link>
-                    </li>
-                    <li class="mx-2">/</li>
-                    <li>
-                        <router-link :to="{ name: 'todos.single', params: { id: todo?.id } }" class="dark:text-white">{{
-                            todo?.label }}</router-link>
-                    </li>
-                </ol>
-            </div>
 
             <input id="inline-password" type="text" v-model="form.label" v-on:keyup.enter="addTask(todo.id)"
                 class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500 mb-4">
@@ -85,18 +69,20 @@
 </template>
   
 <script>
+import Header from '@/ui/components/Header.vue';
+import Modal from '@/ui/components/Modal.vue';
 import { onMounted, computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
 import TaskService from '@/infra/services/tasks.service.js'
 import { useNotification } from "@kyvg/vue3-notification";
-import Modal from '@/ui/components/Modal.vue';
 import { getTagColorClass } from '@/utils/tagColor';
 
 export default {
     name: "Todo",
     components: {
-        Modal
+        Header,
+        Modal,
     },
     emits: ['close-modal'],
     setup() {
