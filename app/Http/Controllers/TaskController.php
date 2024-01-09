@@ -6,19 +6,20 @@ use App\Http\Requests\{TodoTaskStoreRequest, TodoTaskUpdateRequest};
 use App\Http\Resources\TaskResource;
 use App\Models\{Todo, Task};
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class TaskController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth:api');
-    // }
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
 
     public function index(): AnonymousResourceCollection
     {
-        // $todos = Task::where('user_id', auth()->id())->latest()->paginate();
-        $todos = auth()->user()->todos()->latest()->paginate(15);
+        $todos = Task::with('status', 'todo')->latest()->paginate();
+        // $todos = auth()->user()->todos()->load()->paginate(15);
         return TaskResource::collection($todos);
     }
 
@@ -62,8 +63,15 @@ class TaskController extends Controller
         }
     }
 
-    public function done(Todo $todo, Task $task): void
+    public function changeStatus(Task $task, Request $request):void
     {
+        $task->status_id = $request->status_id;
+        $task->update();
+    }
+
+    public function done(Todo $todo, Task $task)
+    {
+        // $todo = Todo::whereId($todoId)->first();
         $task->is_completed = true;
         $task->update();
     }

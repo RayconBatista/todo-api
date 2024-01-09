@@ -22,7 +22,7 @@ class TodoTaskStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'label' => 'required|string'
+            'label' => 'required|string',
         ];
     }
 }

@@ -20,10 +20,20 @@ export default class TaskService extends BaseService {
     })
   }
 
+  static changeStatus(params) {
+    const { id, status_id } = params
+    return new Promise((resolve, reject) => {
+      this.request({ auth: true })
+        .post(`/tasks/${id}`, { status_id: status_id})
+        .then(response => resolve(response))
+        .catch(error => reject(error.response))
+    })
+  }
+
   static setDone(todoId, id) {
     return new Promise(async (resolve, reject) => {
       await this.request({ auth: true })
-        .post(`todo/${todoId}/tasks/${id}`)
+        .post(`todos/${todoId}/task/${id}`)
         .then(response => resolve(response))
         .catch(error => reject(error.response))
     })

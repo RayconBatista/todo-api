@@ -16,6 +16,18 @@ export default ({
         commit('SET_TASK', response.data)
       })
   },
+
+  async changeStatus({ commit }, params) {
+    const { id } = params
+    TaskService
+      .changeStatus(params)
+      .then((response) => {
+        commit('SET_TASK', id)
+      })
+      .catch((error) => {
+        console.error('Erro ao alterar o status da tarefa', error)
+      })
+  },
   
   destroyTask({ commit }, id) {
     TaskService

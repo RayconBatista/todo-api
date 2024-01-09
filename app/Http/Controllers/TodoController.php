@@ -22,7 +22,9 @@ class TodoController extends Controller
 
     public function index(): AnonymousResourceCollection
     {
-        $todos = auth()->user()->todos()->latest()->paginate(15);
+        $user = auth()->user();
+        $todos = Todo::where('user_id', $user->id)->with(['tasks', 'project'])->paginate(15);
+        // $todos = auth()->user()->todos()->latest()->paginate(15);
         return TodoResource::collection($todos);
     }
 
@@ -32,7 +34,7 @@ class TodoController extends Controller
     public function show(Todo $todo)
     {
         $this->authorize('view', $todo);
-        $todo->load('tasks');
+        $todo->load(['tasks']);
         return TodoResource::make($todo);
     }
 

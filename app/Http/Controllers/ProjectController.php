@@ -18,7 +18,7 @@ class ProjectController extends Controller
     
     public function index(): AnonymousResourceCollection
     {
-        $projects = Project::with('todos')->latest()->paginate();
+        $projects = Project::with(['todos', 'tags'])->latest()->paginate();
         return ProjectResource::collection($projects);
     }
 

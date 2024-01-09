@@ -55,7 +55,7 @@
         class="w-1/4 p-2 text-center bg-white rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 max-h-full">
         <div class="px-4 sm:px-0 flex justify-between">
           <h3 class="text-base font-semibold leading-7 text-gray-900 dark:text-white text-left uppercase">Membros</h3>
-          <Modal ref="modalRef" title="Adicionar" :acceptFunction="addMember" @close-modal="handleCloseModal">
+          <Modal ref="modalMembersRef" title="Adicionar" :acceptFunction="addMember" @close-modal="handleCloseModal">
             <select v-model="form.user_id"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
               <option selected disabled>Selecionar membro</option>
@@ -138,7 +138,7 @@ import { useNotification } from "@kyvg/vue3-notification";
 import Header from '@/ui/components/Header.vue';
 import Modal from '../../../components/Modal.vue';
 import ProjectService from '@/infra/services/projects.service'
-
+// import { getTagColorClass } from '@/utils/tagColor'
 export default {
   name: "Project",
   components: {
@@ -150,7 +150,7 @@ export default {
     const store = useStore();
     const route = useRoute();
     const router = useRouter();
-    const modalRef = ref(null);
+    const modalMembersRef = ref(null);
     const loading = ref(false);
     const { notify } = useNotification();
     const form = ref({user_id: ''});
@@ -171,7 +171,7 @@ export default {
           type: "success",
         });
         store.dispatch('setProject', route.params.id);
-        modalRef.value.hideModal();
+        modalMembersRef.value.hideModal();
         form.value.user_id = '';
       });
     }
@@ -180,20 +180,13 @@ export default {
       isModalVisible.value = false
     }
 
-    const getTagColorClass = (color) => {
-      if (color) {
-        return `bg-[${color}]`;
-      }
-      return 'text-gray-700';
-    }
-
     return {
       users,
       form,
       project,
       loading,
-      modalRef,
-      getTagColorClass,
+      modalMembersRef,
+      // getTagColorClass,
       addMember,
       handleCloseModal,
     };

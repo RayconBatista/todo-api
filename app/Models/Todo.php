@@ -16,11 +16,9 @@ class Todo extends Model
         'label'
     ];
 
-    protected $with = ['tasks'];
-
-    public function user(): BelongsTo
+    public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasOne(User::class);
     }
 
     public function project(): BelongsTo

@@ -29,7 +29,7 @@
                         <tr>
                             <th class="px-4 py-2 text-white bg-gray-800 border-b">Index</th>
                             <th class="px-4 py-2 text-white bg-gray-800 border-b">Nome</th>
-                            <th class="px-4 py-2 text-white bg-gray-800 border-b">Pronto</th>
+                            <th class="px-4 py-2 text-white bg-gray-800 border-b">Status</th>
                             <th class="px-4 py-2 text-white bg-gray-800 border-b">Ações</th>
                         </tr>
                     </thead>
@@ -40,22 +40,37 @@
                         <tr v-if="loading">
                             <td colspan="4" class="text-center p-2">Carregando...</td>
                         </tr>
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700" v-for="task in todo?.tasks?.data"
-                            :key="task?.id">
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                            v-for="(task, index) in todo?.tasks?.data" :key="task?.id">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 {{ task?.id }}
                             </th>
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 {{ task?.label }}
                             </th>
-                            <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ task.is_completed == 1 ? "Finalizado" : "Não finalizado" }}
-                            </td>
-                            <td class="px-6 py-4 text-center">
-                                <button @click.stop.prevent="setDone(todo.id, task.id)"
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <span
+                                    class="text-sm mb-2 mr-3 w-[100px] leading-6 inline-flex justify-center font-bold uppercase px-3 dark:text-white rounded-full"
+                                    :style="`background-color: ${task?.status?.color}`">
+                                    {{ task?.status?.label }}
+                                </span>
+                            </th>
+                            <td class="px-6 py-4 flex justi-between">
+                                <Modal ref="modalStatusRef" title="Alterar Status"
+                                    :acceptFunction="() => changeStatus(index)" @close-modal="handleCloseModal"
+                                    class="px-1 py-1 mr-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
+                                    <select v-model="form.status_id"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option selected disabled>Selecionar Status</option>
+                                        <option v-for="status in listStatus" :key="status?.id" :value="status.id">
+                                            {{ status.label }}
+                                        </option>
+                                    </select>
+                                </Modal>
+                                <!-- <button @click.stop.prevent="setDone(todo.id, task.id)"
                                     class="px-1 py-1 mr-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
                                     Finalizar
-                                </button>
+                                </button> -->
                                 <button @click.stop.prevent="destroyTask(todo.id, task.id)"
                                     class="px-1 py-1 font-bold text-white bg-red-500 rounded hover:bg-red-700">
                                     Remover
@@ -75,23 +90,33 @@ import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
 import TaskService from '@/infra/services/tasks.service.js'
 import { useNotification } from "@kyvg/vue3-notification";
+import Modal from '@/ui/components/Modal.vue';
+import { getTagColorClass } from '@/utils/tagColor';
+
 export default {
     name: "Todo",
+    components: {
+        Modal
+    },
+    emits: ['close-modal'],
     setup() {
         const store = useStore();
         const route = useRoute();
         const router = useRouter();
         const loading = ref(false);
         const { notify } = useNotification();
-
+        const modalStatusRef = ref(null);
         const todo = computed(() => store.getters.getTodoSelected);
         const todoCount = computed(() => store.getters.getTaskByTodoCount);
-        const tasksByNotDone = computed(() => store.getters.tasksIsNotDone)
-        const form = ref({ label: '' });
+        const tasksByNotDone = computed(() => store.getters.tasksIsNotDone);
+        const listStatus = computed(() => store.getters.allStatus)
+        const isModalVisible = ref(false);
+        const form = ref({ label: '', status_id: '' });
 
         onMounted(() => {
-            store.dispatch('getTasks', route.params.id)
-            store.dispatch('setTodo', route.params.id)
+            store.dispatch('getTasks', route.params.id);
+            store.dispatch('setTodo', route.params.id);
+            store.dispatch('getListStatus');
         });
 
         const addTask = async (todoId) => {
@@ -114,6 +139,29 @@ export default {
                 });
             } catch (error) {
                 console.error('Erro ao registrar o todo:', error);
+            }
+        };
+
+        const changeStatus = async (taskIndex) => {
+            try {
+                const taskId = todo.value.tasks.data[taskIndex].id;
+                await store.dispatch('changeStatus', { id: taskId, status_id: form.value.status_id });
+                notify({
+                    title: "Deu certo",
+                    text: "Task atualizado com sucesso",
+                    type: "success",
+                });
+                await store.dispatch('getTasks', route.params.id);
+                await store.dispatch('setTodo', route.params.id);
+
+                modalStatusRef?.value?.[taskIndex]?.hideModal();
+            } catch (error) {
+                console.log(error)
+                // notify({
+                //     title: "Erro ao aualizar a tarefa",
+                //     text: error.data.message,
+                //     type: "danger",
+                // });
             }
         };
 
@@ -170,6 +218,10 @@ export default {
             }
         };
 
+        const handleCloseModal = () => {
+            isModalVisible.value = false
+        }
+
         return {
             todo,
             todoCount,
@@ -177,8 +229,14 @@ export default {
             addTask,
             destroyTask,
             tasksByNotDone,
+            listStatus,
             setDone,
-            loading
+            changeStatus,
+            loading,
+            getTagColorClass,
+            modalStatusRef,
+            isModalVisible,
+            handleCloseModal
         };
     },
 }

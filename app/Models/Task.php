@@ -12,12 +12,19 @@ class Task extends Model
 
     protected $fillable = [
         'todo_id',
+        'status_id',
         'label',
         'is_completed'
     ];
 
-    public function todo(): BelongsTo
+    public function todo()
     {
-        return $this->belongsTo(Todo::class);
+        return $this->hasOne(Todo::class, 'id', 'todo_id');
+        // return $this->hasOne(Todo::class);
+    }
+
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(Status::class);
     }
 }

@@ -22,7 +22,9 @@ class TaskResource extends JsonResource
     {
         return [
             'id'            => $this->id,
-            'todo'          => new TodoResource($this->todo),
+            'todo'          => TodoResource::make($this->whenLoaded('todo')),
+            // 'todo'          => TodoResource::make($this->whenLoaded('todo')),
+            'status'        => $this->whenNotNull(new StatusResource($this->status)),
             'label'         => $this->label,
             'is_completed'  => $this->is_completed,
         ];

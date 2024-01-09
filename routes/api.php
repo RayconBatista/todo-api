@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{AuthController, InviteController, MeController, TodoController, TaskController, UserController, ProjectController};
+use App\Http\Controllers\{AuthController, InviteController, MeController, TodoController, TaskController, UserController, ProjectController, StatusController};
 
 /*
 |--------------------------------------------------------------------------
@@ -31,9 +31,13 @@ Route::prefix('v1')->group(function () {
     Route::post('user/send-invite', [InviteController::class, 'generateInvite'])->middleware('auth:api');
     // Route::get('/accept-invite/{token}', [InviteController::class, 'acceptInvite'])->name('accept.invite');
 
+    Route::apiResource('status', StatusController::class);
     Route::resource('todos', TodoController::class);
     Route::resource('projects', ProjectController::class);
     Route::post('projects/{project}/add-member', [ProjectController::class, 'addMember']);
-    Route::resource('todo/{todo}/tasks', TodoController::class)->middleware('auth:api');
-    Route::post('todo/{todo}/tasks/{task}', [TaskController::class, 'done']);
+
+    Route::apiResource('todo/{todo}/tasks', TaskController::class);
+    Route::post('tasks/{task}', [TaskController::class, 'changeStatus'])->name('tasks.changeStatus');
+    Route::post('todos/{todo}/task/{task}', [TaskController::class, 'done'])->name('tasks.done');
+    
 });

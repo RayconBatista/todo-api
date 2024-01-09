@@ -1,11 +1,6 @@
 export default ({
-    task: {
-        id: '',
-        label: '',
-        user: {},
-        status: {}
-    },
-    tasks: {
+    status: {},
+    statuses: {
         data: [],
         meta: {
             current_page: 1,
