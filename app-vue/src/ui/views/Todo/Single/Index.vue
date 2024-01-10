@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <Header title="Todos" :data="todo" />
+        <Header title="Todos" routeName="todos.index" routeSingleName="todos.single" :data="todo" />
         <div
             class="w-full p-2 text-center bg-white rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 max-h-full">
 

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <notifications position="top right" />
-    <Header title="Projetos" :data="project" />
+    <Header title="Projetos" routeName="projects.index" routeSingleName="projects.single" :data="project" />
 
     <div class="flex justify-between">
       <div

@@ -11,7 +11,7 @@
                 </li>
                 <li class="mx-2" v-if="data">/</li>
                 <li v-if="data">
-                    <router-link :to="{ name: routeName, params: { id: data?.id } }" class="text-gray-600 dark:text-white">
+                    <router-link :to="{ name: routeSingleName, params: { id: data?.id } }" class="text-gray-600 dark:text-white">
                         {{ data?.name ? data?.name : data?.label }}
                     </router-link>
                 </li>
@@ -28,6 +28,10 @@ export default {
             default: "Dashboard",
         },
         routeName: {
+            type: String,
+            default: ""
+        },
+        routeSingleName: {
             type: String,
             default: ""
         },
