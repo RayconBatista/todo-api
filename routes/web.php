@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InviteController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,5 +18,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
+Route::get('verify-email', [AuthController::class, 'verifyEmail']);
 Route::get('/accept-invite/{token}', [InviteController::class, 'acceptInvite'])->name('accept.invite');

@@ -18,7 +18,7 @@ use App\Http\Controllers\{AuthController, InviteController, MeController, TodoCo
 Route::prefix('v1')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('register', [AuthController::class, 'register']);
-    Route::post('verify-email', [AuthController::class, 'verifyEmail']);
+
     Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
     Route::post('reset-password', [AuthController::class, 'resetPassword']);
     Route::prefix('me')->group(function () {
@@ -28,8 +28,8 @@ Route::prefix('v1')->group(function () {
 
     Route::resource('users', UserController::class);
     
-    Route::post('user/send-invite', [InviteController::class, 'generateInvite'])->middleware('auth:api');
-    // Route::get('/accept-invite/{token}', [InviteController::class, 'acceptInvite'])->name('accept.invite');
+    Route::get('invites', [InviteController::class, 'index']);
+    Route::post('user/send-invite', [InviteController::class, 'generateInvite']);
 
     Route::apiResource('status', StatusController::class);
     Route::resource('todos', TodoController::class);

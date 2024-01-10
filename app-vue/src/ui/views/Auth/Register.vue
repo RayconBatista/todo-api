@@ -71,8 +71,9 @@ export default {
   setup() {
     const store = useStore();
     const router = useRoute();
+    const { notify } = useNotification();
     const inviteEmail = router.query.invite_email;
- 
+
     const form = reactive({
       first_name: "Fulano",
       last_name: "Test",
@@ -80,7 +81,9 @@ export default {
       password: "Ft123456789",
     });
     const signUp = async () => {
-      await store.dispatch("storeUser", form)
+      await store.dispatch("storeUser", form);
+ 
+      router.push({name: 'login'})
     }
 
     return {

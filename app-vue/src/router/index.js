@@ -29,6 +29,12 @@ const routes = [
             name: "users.index",
             component: pages.User,
           },
+          {
+            path: "invited",
+            name: "users.invited",
+            component: pages.Invite,
+            meta: { title: `Convidados - ${appName}` },
+          },
         ]
       },
       {
@@ -85,7 +91,7 @@ const routes = [
     meta: {
       title: "Cadastro",
     },
-    component: templates.LayoutAuth,
+    // component: templates.LayoutAuth,
     children: [{ path: "", name: "register", component: authPages.Register }],
   },
   {
@@ -122,7 +128,7 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, _, next) => {
-  const loggedIn = store.state.users.loggedIn;
+  const loggedIn = store.state.auth.loggedIn;
   document.title = to.meta.title;
 
   if (to.name !== "reset.password" && !loggedIn) {

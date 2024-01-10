@@ -20,5 +20,10 @@ export default {
             icon: 'fa-solid fa-users',
             to: 'users.index'
         },
+        {
+            title: 'Convidados',
+            icon: 'fa-solid fa-user-plus',
+            to: 'users.invited'
+        },
     ]
 }

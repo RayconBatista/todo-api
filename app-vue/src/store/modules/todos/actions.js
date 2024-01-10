@@ -24,7 +24,6 @@ export default ({
         commit('SET_TODO', response.data)
       })
   },
-  
   destroyTodo({ commit }, id) {
     TodoService
       .destroyTodo(id)

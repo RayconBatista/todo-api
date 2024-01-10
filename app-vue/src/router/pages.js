@@ -7,6 +7,8 @@ import Todo from "@/ui/views/Todo/Index.vue";
 import TodoSingle from "@/ui/views/Todo/Single/Index.vue";
 
 import User from "@/ui/views/Users/Index.vue";
+import Invite from "@/ui/views/Users/Invites/Index.vue";
+
 import Profile from '@/ui/views/Profile/Index.vue';
 
 export const pages = {
@@ -15,6 +17,7 @@ export const pages = {
     ProjectSingle,
     Todo,
     User,
+    Invite,
     TodoSingle,
     Profile,
 }

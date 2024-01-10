@@ -12,6 +12,16 @@ use Illuminate\Support\Str;
 
 class InviteController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api')->except('acceptInvite');
+    }
+
+    public function index()
+    {
+        return Invite::paginate(15);
+    }
+
     public function generateInvite(Request $request)
     {
         $user = auth()->user(); // Obtém o usuário autenticado que está enviando o convite
@@ -44,6 +54,7 @@ class InviteController extends Controller
         if (!$invite) {
             return response()->json(['error' => 'Convite inválido'], 404);
         }
+        $this->middleware('auth:api')->except('acceptInvite');
         $redirectUrl = 'http://localhost:5173/registro?invite_email=' . $invite->email;
 
         return redirect($redirectUrl);

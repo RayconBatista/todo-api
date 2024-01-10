@@ -12,7 +12,9 @@ use App\Http\Requests\AuthRegisterRequest;
 use App\Http\Requests\AuthResetPasswordRequest;
 use App\Http\Requests\AuthVerifyEmailRequest;
 use App\Http\Resources\UserResource;
+use App\Models\Invite;
 use App\Services\AuthService;
+use Carbon\Carbon;
 
 class AuthController extends Controller
 {
@@ -39,8 +41,12 @@ class AuthController extends Controller
     public function register(AuthRegisterRequest $request)
     {
         $data = $request->validated();
-        $this->authService->register($data);
-
+        $user = $this->authService->register($data);
+        $invite = Invite::where('email', $user->email)->first();
+        $invite->registered_at = Carbon::now();
+        $invite->is_used = true;
+        $invite->update();
+        
         return response()->json([
             'status' => 'success',
             'message' => 'Projeto excluído com sucesso'
@@ -50,11 +56,13 @@ class AuthController extends Controller
     /**
      * @throws VerifyEmailTokenInvalidException
      */
-    public function verifyEmail(AuthVerifyEmailRequest $request): UserResource
+    public function verifyEmail(AuthVerifyEmailRequest $request)
     {
         $input = $request->validated();
         $user = $this->authService->verifyEmail($input['token']);
-        return new UserResource($user);
+        $redirectUrl = 'http://localhost:5173/login';
+
+        return redirect($redirectUrl);
     }
 
     public function forgotPassword(AuthForgotPasswordRequest $request): void

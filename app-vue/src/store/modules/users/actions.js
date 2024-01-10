@@ -1,5 +1,4 @@
-import AuthService from '@/infra/services/auth.service';
-import ResetPasswordService from '@/infra/services/password.reset.service';
+import UserService from '@/infra/services/users.service';
 import { useNotification } from "@kyvg/vue3-notification";
 import { useRouter, useRoute } from 'vue-router';
 
@@ -7,53 +6,26 @@ const router = useRouter();
 const { notify } = useNotification();
 
 export default ({
-    async auth({ dispatch }, params) {
-        return await AuthService.auth(params).then(() => dispatch('getMe'))
-    },
-
     async getUsers({ commit }) {
-        return await AuthService
+        return await UserService
             .getUsers()
             .then(response => {
                 const { data, meta } = response.data;
                 commit('ADD_USERS', { data, meta });
             })
     },
-
-    storeUser(params) {
-        AuthService.register(params).finally(() => {
-            window.location.href = "http://localhost:5173/login"
-        })
-    },
-
-    async getMe({ commit }) {
-        commit('CHANGE_LOADING', true)
-
-        await AuthService.getMe()
-            .then(user => {
-                commit('GET_USER', user);
+    async storeUser({ commit }, params) {
+        await UserService
+            .register(params)
+            .then(() => {
+                notify({
+                    title: "Deu certo",
+                    text: "Usuário registrado com sucesso",
+                    type: "success",
+                  });
             })
-            .finally(() => commit('CHANGE_LOADING', false))
-    },
-
-    async updateMe({ commit, state }, payload) {
-        commit('CHANGE_LOADING', true)
-        AuthService.updateMe(state.user.id, payload)
-            .then(response => {
-                commit('UPDATE_ME', response)
+            .finally(() => {
+                window.location.href = "http://localhost:5173/login"
             })
-            .finally(() => commit('CHANGE_LOADING', false))
-    },
-
-    logout({ commit }) {
-        commit('CHANGE_LOADING', true)
-
-        return AuthService.logout()
-            .then(() => commit('LOGOUT'))
-            .finally(() => commit('CHANGE_LOADING', false))
-    },
-
-    forgetPassword(_, params) {
-        return ResetPasswordService.forgetPassword(params)
     },
 });

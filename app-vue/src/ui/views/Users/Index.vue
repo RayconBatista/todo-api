@@ -3,14 +3,7 @@
         <Header title="Usuários" />
         <div
             class="w-full p-2 text-center bg-white dark:bg-gray-800 rounded-lg shadow sm:p-8  dark:border-gray-700 max-h-full">
-            <div class="flex items-end mb-4">
-                <Modal ref="modalTodoRef" class="items-end ml-auto" title="Convidar" :acceptFunction="sendInvite"
-                    @close-modal="handleCloseModal">
-                    <!-- Conteúdo do modal aqui -->
-                    <input type="text" v-model="form.email" placeholder="Inserir email"
-                        class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500 mb-4">
-                </Modal>
-            </div>
+  
             <div class="bg-white rounded-lg shadow-md">
                 <table class="min-w-full border border-gray-300">
                     <thead>
@@ -43,36 +36,40 @@ import { computed, onMounted, ref } from 'vue';
 import { useNotification } from "@kyvg/vue3-notification";
 import Header from '../../components/Header.vue';
 import Modal from '../../components/Modal.vue';
-import UserService from '@/infra/services/users.service.js';
+// import UserService from '@/infra/services/users.service.js';
 export default {
     components: {
         Header,
-        Modal
+        // Modal
     },
     setup() {
         const store = useStore();
         const users = computed(() => store.state.users.users);
         const { notify } = useNotification();
-        const form = ref({ email: '' });
+        // const form = ref({ email: '' });
+        // const modalInviteRef = ref(null);
 
         onMounted(() => {
             store.dispatch('getUsers');
         });
 
-        const sendInvite = () => {
-            UserService.sendInvite(form.value.email).then(() => {
-                notify({
-                    title: "Deu certo",
-                    text: "Usuário convidado com sucesso",
-                    type: "success",
-                });
-            })
-        }
+        // const sendInvite = () => {
+        //     UserService.sendInvite(form.value.email).then(() => {
+        //         notify({
+        //             title: "Deu certo",
+        //             text: "Usuário convidado com sucesso",
+        //             type: "success",
+        //         });
+        //     }).finally(() => {
+        //         modalInviteRef.value.hideModal()
+        //     })
+        // }
 
         return {
             users,
-            form,
-            sendInvite
+            // form,
+            // sendInvite,
+            // modalInviteRef
         }
     }
 }
