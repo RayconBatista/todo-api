@@ -92,7 +92,7 @@ export default {
           email: form.email,
           password: form.password,
         })
-        .then(() => router.push({ name: "home" }))
+        .then(() => router.push({ name: "home", replace: true }))
         .catch((error) => {
           let msgError = "Falha na requisição";
           if (error?.status === 422) msgError = "Dados Inválidos";

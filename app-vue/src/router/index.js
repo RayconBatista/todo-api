@@ -1,10 +1,10 @@
-import { createWebHistory, createRouter } from "vue-router";
+import { createWebHistory, createRouter, createWebHashHistory } from "vue-router";
 import { authPages } from "./auth";
 import { pages } from "./pages";
 import { templates } from "./templates";
 import store from "@/store";
 import { TOKEN_NAME } from "@/infra/configs";
-
+import { redirectIfAuthenticated } from "./middlewares";
 const appName = import.meta.env.VITE_APP_NAME;
 
 const routes = [
@@ -91,7 +91,7 @@ const routes = [
     meta: {
       title: "Cadastro",
     },
-    // component: templates.LayoutAuth,
+    component: templates.LayoutAuth,
     children: [{ path: "", name: "register", component: authPages.Register }],
   },
   {
@@ -123,29 +123,50 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(),
   routes,
 });
 
-router.beforeEach(async (to, _, next) => {
-  const loggedIn = store.state.auth.loggedIn;
-  document.title = to.meta.title;
+router.beforeEach(async (to, from, next) => {
+  const loggedIn = await store.state.auth.loggedIn;
+  document.title = await to.meta.title;
 
-  if (to.name !== "reset.password" && !loggedIn) {
-    const token = localStorage.getItem(TOKEN_NAME);
+  // Verificar se a rota atual é a página de redefinição de senha
+  const isResetPasswordRoute = to.name === 'forget.password';
+  const token = localStorage.getItem(TOKEN_NAME);
 
-    if (!token && to.name !== "login" && to.name !== "forget.password") {
-      return router.push({ name: "login" });
+  if (!loggedIn && !isResetPasswordRoute) {
+
+    if (!token && to.fullPath !== "/login" && to.name !== "forget.password") {
+      return next({ name: "login", replace: true });
     }
 
     try {
       await store.dispatch("getMe");
+      await store.commit('CHANGE_LOADING', true);
+      if(to.name === 'login') {
+        return next({ name: "home" });
+      }
+      // return next({ name: "home", replace: true });
     } catch (error) {
-      if (to.name !== "login") return router.push({ name: "login" });
+      if (to.name !== "login") {
+        // Redirecionar para a página de login, garantindo que a URL seja atualizada
+        return next({ name: "login", replace: true });
+      }
+    }
+  } else if (loggedIn && to.name === 'login') {
+    await store.commit('CHANGE_LOADING', true);
+    if(to.name === 'login') {
+      return next({ name: "home" });
     }
   }
 
   next();
 });
+
+
+
+
+
 
 export default router;
