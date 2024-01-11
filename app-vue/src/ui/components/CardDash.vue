@@ -1,5 +1,5 @@
 <template>
-    <div :class="`p-4 bg-${color}-500 text-white`">
+    <div :class="`p-4 text-white`" :style="`background-color: ${color}`">
         <h2 class="text-xl font-semibold">{{ title }}</h2>
         <p class="text-3xl">{{ dataCount }}</p>
     </div>
