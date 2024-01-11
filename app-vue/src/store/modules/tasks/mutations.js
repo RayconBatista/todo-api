@@ -1,8 +1,6 @@
 export default ({
     ADD_TASKS(state, tasks) {
-        state.tasks = [...tasks.data]
-        state.meta = tasks.meta
-        state.meta.links = tasks.meta.links
+        state.tasks = tasks.data
     },
     SET_TASK(state, task) {
         state.task = task.data

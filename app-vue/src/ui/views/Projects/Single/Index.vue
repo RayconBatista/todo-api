@@ -138,7 +138,6 @@ import { useNotification } from "@kyvg/vue3-notification";
 import Header from '@/ui/components/Header.vue';
 import Modal from '../../../components/Modal.vue';
 import ProjectService from '@/infra/services/projects.service'
-// import { getTagColorClass } from '@/utils/tagColor'
 export default {
   name: "Project",
   components: {
@@ -186,7 +185,6 @@ export default {
       project,
       loading,
       modalMembersRef,
-      // getTagColorClass,
       addMember,
       handleCloseModal,
     };

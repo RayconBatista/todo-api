@@ -35,17 +35,17 @@ class TaskController extends Controller
         return TaskResource::make($todoTask);
     }
 
-    /**
-     * @throws AuthorizationException
-     */
-    public function update(Todo $todo, Task $task, TodoTaskUpdateRequest $request): TaskResource
-    {
-        $this->authorize('update', $task);
-        $input = $request->validated();
-        $task->update($input);
+    // /**
+    //  * @throws AuthorizationException
+    //  */
+    // public function update(Todo $todo, Task $task, TodoTaskUpdateRequest $request): TaskResource
+    // {
+    //     $this->authorize('update', $task);
+    //     $input = $request->validated();
+    //     $task->update($input);
 
-        return new TaskResource($task);
-    }
+    //     return new TaskResource($task);
+    // }
 
     /**
      * @throws AuthorizationException

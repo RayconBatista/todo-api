@@ -3,33 +3,13 @@
         <Header title="Dashboard" />
         <div
             class="w-full p-2 text-center bg-white rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 max-h-full">
-            <!-- <div class="flex justify-between mb-2">
-                <ol class="flex text-gray-600 list-reset">
-                    <li>
-                        <router-link to="/home" class="dark:text-white">Home</router-link>
-                    </li>
-                    <li class="mx-2">/</li>
-                    <li>
-                        <router-link :to="{ name: 'home' }" class="dark:text-white">Dashboard</router-link>
-                    </li>
-                </ol>
-            </div> -->
-
             <div class="grid grid-cols-3 gap-4">
-                <div class="bg-blue-500 p-4 text-white">
-                    <h2 class="text-xl font-semibold">Quantidade Todos</h2>
-                    <p class="text-3xl">{{ totalTodos }}</p>
-                </div>
-
-                <div class="bg-green-500 p-4 text-white">
-                    <h2 class="text-xl font-semibold">Quantidade de Membros</h2>
-                    <p class="text-3xl">{{ totalMembers }}</p>
-                </div>
-
-                <div class="bg-yellow-500 p-4 text-white">
-                    <h2 class="text-xl font-semibold">Quantidade de Projetos</h2>
-                    <p class="text-3xl">{{ totalprojects }}</p>
-                </div>
+                <CardDash title="Quantidade Todos" color="blue" :dataCount="totalTodos"/>
+                <CardDash title="Quantidade de Membros" color="green" :dataCount="totalMembers"/>
+                <CardDash title="Quantidade de Projetos" color="yellow" :dataCount="totalprojects"/>
+            </div>
+            <div class="grid grid-cols-3 gap-4">
+                <PieChart :data="tasks" title="Tarefas" />
             </div>
         </div>
     </div>
@@ -38,26 +18,33 @@
 import { computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
 import Header from '../../components/Header.vue';
+import CardDash from '../../components/CardDash.vue';
+import PieChart from '../../components/Charts/Pie.vue';
 export default {
     components: {
-        Header
+        Header,
+        CardDash,
+        PieChart
     },
     setup() {
         const store = useStore();
         const totalTodos = computed(() => store.getters.getTodoTotal);
         const totalprojects = computed(() => store.getters.getProjectTotal);
         const totalMembers = computed(() => store.getters.getMembersTotal);
+        const tasks = computed(() => store.getters.allTasks);
 
-        onMounted(() => {
-            store.dispatch('getTodos');
-            store.dispatch('getProjects');
-            store.dispatch('getUsers');
+        onMounted(async () => {
+            await store.dispatch('getTodos');
+            await store.dispatch('getTasks');
+            await store.dispatch('getProjects');
+            await store.dispatch('getUsers');
         });
         
         return {
             totalTodos,
             totalMembers,
-            totalprojects
+            totalprojects,
+            tasks
         }
     }
 }

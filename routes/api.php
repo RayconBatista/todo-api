@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{AuthController, InviteController, MeController, TodoController, TaskController, UserController, ProjectController, StatusController};
+use App\Http\Controllers\{AuthController, DashboardController, InviteController, MeController, TodoController, TaskController, UserController, ProjectController, StatusController};
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +28,7 @@ Route::prefix('v1')->group(function () {
 
     Route::resource('users', UserController::class);
     
+    Route::get('dashboard/tasks', [DashboardController::class, 'tasks']);
     Route::get('invites', [InviteController::class, 'index']);
     Route::post('user/send-invite', [InviteController::class, 'generateInvite']);
 

@@ -5,8 +5,9 @@ import users from './modules/users';
 import invites from './modules/invites';
 import projects from './modules/projects';
 import todos from './modules/todos';
-import statuses from './modules/statuses';
 import tasks from './modules/tasks';
+import statuses from './modules/statuses';
+import tasksByTodo from './modules/tasksByTodo';
 
 export default createStore({
     modules: {
@@ -16,6 +17,7 @@ export default createStore({
         statuses,
         projects,
         todos,
-        tasks
+        tasks,
+        tasksByTodo
     }
 })

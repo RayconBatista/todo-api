@@ -100,7 +100,7 @@ export default {
         const form = ref({ label: '', status_id: '' });
 
         onMounted(() => {
-            store.dispatch('getTasks', route.params.id);
+            store.dispatch('getTasksByTodo', route.params.id);
             store.dispatch('setTodo', route.params.id);
             store.dispatch('getListStatus');
         });
@@ -114,7 +114,7 @@ export default {
                         type: "success",
                     });
                     store.dispatch('setTodo', route.params.id)
-                    store.dispatch('getTasks', route.params.id)
+                    store.dispatch('getTasksByTodo', route.params.id)
                     form.value.label = ''
                 }).catch(() => {
                     notify({
@@ -137,7 +137,7 @@ export default {
                     text: "Task atualizado com sucesso",
                     type: "success",
                 });
-                await store.dispatch('getTasks', route.params.id);
+                await store.dispatch('getTasksByTodo', route.params.id);
                 await store.dispatch('setTodo', route.params.id);
 
                 modalStatusRef?.value?.[taskIndex]?.hideModal();
@@ -160,7 +160,7 @@ export default {
                         type: "success",
                     });
 
-                    store.dispatch('getTasks', route.params.id)
+                    store.dispatch('getTasksByTodo', route.params.id)
                 }).catch((error) => {
                     console.log({ 'error': error?.data?.message })
                     notify({

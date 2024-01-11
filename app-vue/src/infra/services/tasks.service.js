@@ -1,7 +1,7 @@
 import BaseService from "./base.service"
 
 export default class TaskService extends BaseService {
-  static getTasks(id) {
+  static getTasksByTodo(id) {
     return new Promise(async (resolve, reject) => {
       await this.request({ auth: true })
         .get(`todo/${id}/tasks`)
